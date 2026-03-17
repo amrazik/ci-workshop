@@ -8,3 +8,4 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 
 [plugins]
 test-logger = { id = "com.adarshr.test-logger", version = "4.0.0" }
+spotless = { id = "com.diffplug.spotless", version = "8.3.0" }

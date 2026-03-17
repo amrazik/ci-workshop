@@ -3,6 +3,7 @@ import com.adarshr.gradle.testlogger.theme.ThemeType
 plugins {
     id("java")
     alias(libs.plugins.test.logger)
+    alias(libs.plugins.spotless)
 }
 
 group = "com.signavio.ci"
@@ -21,6 +22,12 @@ dependencies {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+spotless {
+    java {
+        palantirJavaFormat()
     }
 }
 
