@@ -2,6 +2,7 @@ import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
     id("java")
+    id("jacoco")
     alias(libs.plugins.test.logger)
     alias(libs.plugins.spotless)
 }
@@ -33,6 +34,22 @@ spotless {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+tasks.register("coverage") {
+    dependsOn(tasks.jacocoTestReport)
+}
+
+jacoco {
+    toolVersion = "0.8.14"
 }
 
 testlogger {
