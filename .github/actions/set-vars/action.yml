@@ -1,0 +1,15 @@
+name: 'Set environment variables'
+description: 'Configures environment variables for a workflow'
+
+inputs:
+  filePath:
+    description: 'File path to a variable file or directory. Defaults to ./.github/variables/* if none specified and runs against each file in that directory.'
+    required: false
+    default: ./.github/variables/*
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        cat "${{ inputs.filePath }}" >> $GITHUB_ENV
