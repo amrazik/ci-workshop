@@ -10,9 +10,16 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MainTest {
-    @ParameterizedTest
+    @ParameterizedTest(name = "Testing number: {0}")
     @MethodSource("numbers")
-    void tests(int number) throws InterruptedException {
+    void testingNumbers(int number) throws InterruptedException {
+        Thread.sleep(100);
+        assertTrue(number == number);
+    }
+
+    @ParameterizedTest(name = "Testing other number: {0}")
+    @MethodSource("numbers")
+    void testingNumbers2(int number) throws InterruptedException {
         Thread.sleep(100);
         assertTrue(number == number);
     }
