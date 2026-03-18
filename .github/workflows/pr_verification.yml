@@ -37,14 +37,23 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
 
+      - name: Configure Gradle
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF >> ~/.gradle/gradle.properties
+          org.gradle.caching=true
+          org.gradle.configuration-cache=true
+          org.gradle.parallel=true
+          EOF
+
       - name: Run spotless check
-        run: ./gradlew spotlessCheck --build-cache --configuration-cache
+        run: ./gradlew spotlessCheck
 
       - name: Build project
-        run: ./gradlew assemble --build-cache --configuration-cache
+        run: ./gradlew assemble
 
       - name: Run unit tests
-        run: ./gradlew test coverage --build-cache --configuration-cache
+        run: ./gradlew test coverage
 
       - name: Archive reports
         uses: actions/upload-artifact@v7
