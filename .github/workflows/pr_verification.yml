@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unit-tests:
-    name: Unit Tests
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,6 +25,16 @@ jobs:
 
       - name: Run spotless check
         run: ./gradlew spotlessCheck
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup JDK and Gradle
+        uses: ./.github/actions/my-setup
 
       - name: Build project
         run: ./gradlew assemble
