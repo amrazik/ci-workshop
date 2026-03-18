@@ -3,6 +3,9 @@ name: PR verification
 
 on:
   pull_request:
+  push:
+    branches:
+      - 'master'
   workflow_dispatch:
 
 concurrency:
