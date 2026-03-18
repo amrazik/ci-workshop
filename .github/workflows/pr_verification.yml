@@ -60,6 +60,9 @@ jobs:
         with:
           name: build_results
 
+      - name: Setup JDK and Gradle
+        uses: ./.github/actions/my-setup
+
       - name: Run unit tests
         run: ./gradlew test --rerun coverage
 
