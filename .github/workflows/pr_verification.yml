@@ -13,15 +13,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verification:
-    name: PR Verification
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup JDK and Gradle
         uses: ./.github/actions/my-setup
@@ -42,6 +39,16 @@ jobs:
           path: |
             **/build/**/jacoco*.xml
             **/build/classes/
+
+  sonar:
+    name: Sonar Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run Sonar Scan
         run: |
