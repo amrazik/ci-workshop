@@ -1,13 +1,15 @@
 ---
 name: PR verification
 
+# What triggers this workflow
 on:
-  pull_request:
-  push:
+  pull_request: # Pull requests
+  push: # Merges to master
     branches:
       - 'master'
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger
 
+# Concurrency defines how many concurrent runs of this workflow are allowed.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -15,14 +17,15 @@ concurrency:
 jobs:
   verification:
     name: PR Verification
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Machine this workflow will run on. Other Github-hosted runners include: windows-latest, macos-latest.
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0 # Fetch full commit history. Usually needed for SonarQube analysis.
+          ref: ${{ github.event.pull_request.head.sha }} # Actual PR commit (HEAD).
 
+      # A small utility action that takes a file with key=value pairs and sets them as environment variables for the rest of the workflow.
       - name: Set Environment Variables
         uses: ./.github/actions/set-vars
         with:
@@ -43,6 +46,7 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test coverage
 
+      # Here we upload the test reports as artifacts. They are needed for the SonarQube analysis in the next step, but not in this case as scanning is faked here.
       - name: Archive reports
         uses: actions/upload-artifact@v7
         with:
@@ -51,6 +55,7 @@ jobs:
             **/build/**/jacoco*.xml
             **/build/classes/
 
+      # Fake SonarQube scan.
       - name: Run Sonar Scan
         run: |
           SONAR_SCAN_SCRIPT='./.github/scripts/sonar_scan.sh'
