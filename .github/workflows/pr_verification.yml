@@ -52,4 +52,7 @@ jobs:
             **/build/classes/
 
       - name: Run Sonar Scan
-        run: ./.github/scripts/sonar_scan.sh
+        run: |
+          SONAR_SCAN_SCRIPT='./.github/scripts/sonar_scan.sh'
+          chmod +x "${SONAR_SCAN_SCRIPT}"
+          "${SONAR_SCAN_SCRIPT}"
