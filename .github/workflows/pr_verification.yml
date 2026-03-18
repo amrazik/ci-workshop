@@ -1,5 +1,5 @@
 ---
-name: PR verification
+name: PR verification workflow
 
 on:
   pull_request:
@@ -45,6 +45,7 @@ jobs:
           name: build_results
           path: |
             **/build/**
+            .gradle/
 
   unit-tests:
     name: Unit Tests
