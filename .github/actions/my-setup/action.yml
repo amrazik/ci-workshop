@@ -25,6 +25,6 @@ runs:
         cat <<EOF >> ~/.gradle/gradle.properties
         org.gradle.caching=true
         org.gradle.configuration-cache=true
-        org.gradle.daemon=false
+        org.gradle.daemon=true
         org.gradle.parallel=true
         EOF
