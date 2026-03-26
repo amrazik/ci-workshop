@@ -75,6 +75,6 @@ jobs:
       # Fake SonarQube check. In a real scenario, you would run the actual SonarQube analysis here and fail the build if the quality gate is not passed.
       - name: Run Sonar Check
         run: |
-          SONAR_CHECK_SCRIPT='./.github/scripts/sonar_check.sh'
+          SONAR_CHECK_SCRIPT='./.github/scripts/sonar_scan.sh'
           chmod +x "${SONAR_CHECK_SCRIPT}"
           "${SONAR_CHECK_SCRIPT}"
