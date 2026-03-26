@@ -25,32 +25,8 @@ jobs:
           fetch-depth: 0 # Fetch full commit history. Usually needed for SonarQube analysis.
           ref: ${{ github.event.pull_request.head.sha }} # Actual PR commit (HEAD).
 
-      # A small utility action that takes a file with key=value pairs and sets them as environment variables for the rest of the workflow.
-      - name: Set Environment Variables
-        uses: ./.github/actions/set-vars
-        with:
-          filePath: ./.github/variables/java_config.env
-
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Cache Gradle dependencies
-        uses: gradle/actions/setup-gradle@v5
-
-      - name: Configure Gradle
-        run: |
-          mkdir -p ~/.gradle
-          cat <<EOF >> ~/.gradle/gradle.properties
-          org.gradle.caching=true
-          org.gradle.configuration-cache=true
-          org.gradle.parallel=true
-          EOF
-
-      - name: Run spotless check
-        run: ./gradlew spotlessCheck
+      - name: Setup java
+        uses: ./.github/actions/my-config
 
       - name: Build project
         run: ./gradlew assemble
@@ -84,29 +60,8 @@ jobs:
           fetch-depth: 0 # Fetch full commit history. Usually needed for SonarQube analysis.
           ref: ${{ github.event.pull_request.head.sha }} # Actual PR commit (HEAD).
 
-      # A small utility action that takes a file with key=value pairs and sets them as environment variables for the rest of the workflow.
-      - name: Set Environment Variables
-        uses: ./.github/actions/set-vars
-        with:
-          filePath: ./.github/variables/java_config.env
-
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Cache Gradle dependencies
-        uses: gradle/actions/setup-gradle@v5
-
-      - name: Configure Gradle
-        run: |
-          mkdir -p ~/.gradle
-          cat <<EOF >> ~/.gradle/gradle.properties
-          org.gradle.caching=true
-          org.gradle.configuration-cache=true
-          org.gradle.parallel=true
-          EOF
+      - name: Setup java
+        uses: ./.github/actions/my-config
 
       - name: Run spotless check
         run: ./gradlew spotlessCheck
