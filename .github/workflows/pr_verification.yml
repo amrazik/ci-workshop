@@ -43,8 +43,15 @@ jobs:
             **/build/**/jacoco*.xml
             **/build/classes/
 
+      # Fake SonarQube scan.
+      - name: Run Sonar Scan
+        run: |
+          SONAR_SCAN_SCRIPT='./.github/scripts/sonar_scan.sh'
+          chmod +x "${SONAR_SCAN_SCRIPT}"
+          "${SONAR_SCAN_SCRIPT}"
+
   lint:
-    name: Code style
+    name: PR Verification
     runs-on: ubuntu-latest # Machine this workflow will run on. Other Github-hosted runners include: windows-latest, macos-latest.
     steps:
       - name: Checkout repository
@@ -58,23 +65,3 @@ jobs:
 
       - name: Run spotless check
         run: ./gradlew spotlessCheck
-
-  sonar-check:
-    name: SonarQube Check
-    runs-on: ubuntu-latest # Machine this workflow will run on. Other Github-hosted runners include: windows-latest, macos-latest.
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0 # Fetch full commit history. Usually needed for SonarQube analysis.
-          ref: ${{ github.event.pull_request.head.sha }} # Actual PR commit (HEAD).
-
-      - name: Setup java
-        uses: ./.github/actions/my-config
-
-      # Fake SonarQube check. In a real scenario, you would run the actual SonarQube analysis here and fail the build if the quality gate is not passed.
-      - name: Run Sonar Check
-        run: |
-          SONAR_CHECK_SCRIPT='./.github/scripts/sonar_check.sh'
-          chmod +x "${SONAR_CHECK_SCRIPT}"
-          "${SONAR_CHECK_SCRIPT}"
